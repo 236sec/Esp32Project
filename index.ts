@@ -15,7 +15,7 @@ function initMap() {
     lng: 100.569100,
   };
   const map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
-    zoom: 11,
+    zoom: 16,
     center,
     mapId: "517913eb51add9e4",
   });
@@ -42,6 +42,21 @@ function initMap() {
       unhighlight(advancedMarkerView, property);
     });
   }
+
+  map.addListener('zoom_changed', () => {
+    const markers = document.querySelectorAll('.property');
+    const zoom = map.getZoom();
+    if (zoom < 15) {
+        markers.forEach(marker => {
+            marker.style.display = 'none';
+        });
+    } else {
+        markers.forEach(marker => {
+            marker.style.display = 'block';
+        });
+    }
+});
+
 }
 
 function highlight(markerView, property) {
@@ -64,33 +79,17 @@ function buildContent(property) {
     </div>
     <div class="details">
         <div class="price">${property.price}</div>
-        <div class="address">${property.address}</div>
         <div class="features">
-        <div>
-            <i aria-hidden="true" class="fa fa-bed fa-lg bed" title="bedroom"></i>
-            <span class="fa-sr-only">bedroom</span>
-            <span>${property.bed}</span>
-        </div>
-        <div>
-            <i aria-hidden="true" class="fa fa-bath fa-lg bath" title="bathroom"></i>
-            <span class="fa-sr-only">bathroom</span>
-            <span>${property.bath}</span>
-        </div>
-        <div>
-            <i aria-hidden="true" class="fa fa-ruler fa-lg size" title="size"></i>
-            <span class="fa-sr-only">size</span>
-            <span>${property.size} ft<sup>2</sup></span>
-        </div>
+       
         </div>
     </div>
     `;
   return content;
 }
 
+
 const properties = [{
-  address: '215 Emily St, MountainView, CA',
-  description: 'Single family house with modern design',
-  price: '$ 3,889,000',
+  price: 'Bus1',
   type: 'home',
   bed: 5,
   bath: 4.5,
@@ -100,9 +99,7 @@ const properties = [{
     lng: 100.567023,
   },
 }, {
-  address: '108 Squirrel Ln &#128063;, Menlo Park, CA',
-  description: 'Townhouse with friendly neighbors',
-  price: '$ 3,050,000',
+  price: 'Bus2',
   type: 'building',
   bed: 4,
   bath: 3,
@@ -113,64 +110,62 @@ const properties = [{
   },
 },
 {
-  address: '100 Chris St, Portola Valley, CA',
-  description: 'Spacious warehouse great for small business',
-  price: '$ 3,125,000',
+  price: 'Bus3',
   type: 'warehouse',
   bed: 4,
   bath: 4,
   size: 800,
   position: {
-    lat: 37.39561833718522,
-    lng: -122.21855116258479,
+    lat: 13.848469,
+    lng: 100.565564,
   },
 }, {
   address: '98 Aleh Ave, Palo Alto, CA',
   description: 'A lovely store on busy road',
-  price: '$ 4,225,000',
+  price: 'Bus4',
   type: 'store-alt',
   bed: 2,
   bath: 1,
   size: 210,
   position: {
-    lat: 37.423928529779644,
-    lng: -122.1087629822001,
+    lat: 13.847089,
+    lng: 100.568160,
   },
 }, {
   address: '2117 Su St, MountainView, CA',
   description: 'Single family house near golf club',
-  price: '$ 1,700,000',
+  price: 'Bus5',
   type: 'home',
   bed: 4,
   bath: 3,
   size: 200,
   position: {
-    lat: 37.40578635332598,
-    lng: -122.15043378466069,
+    lat: 13.846568,
+    lng: 100.570435,
   },
 }, {
   address: '197 Alicia Dr, Santa Clara, CA',
   description: 'Multifloor large warehouse',
-  price: '$ 5,000,000',
+  price: 'Bus6',
   type: 'warehouse',
   bed: 5,
   bath: 4,
   size: 700,
   position: {
-    lat: 37.36399747905774,
-    lng: -122.10465384268522,
+    lat: 13.843550,
+    lng: 100.570038,
   },
 }, {
   address: '700 Jose Ave, Sunnyvale, CA',
   description: '3 storey townhouse with 2 car garage',
-  price: '$ 3,850,000',
+  price: 'Bus7',
   type: 'building',
   bed: 4,
   bath: 4,
   size: 600,
   position: {
-    lat: 37.38343706184458,
-    lng: -122.02340436985183,
+    lat: 13.845078,
+    lng: 100.567091,
   },
 }, {
   address: '868 Will Ct, Cupertino, CA',
@@ -210,9 +205,12 @@ const properties = [{
   },
 }];
 
+
+
 declare global {
   interface Window {
     initMap: () => void;
   }
 }
 window.initMap = initMap;
+
