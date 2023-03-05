@@ -6,7 +6,6 @@
 /**
  * map center lat: 13.848285 , lng: 100.569100
  * map id : 517913eb51add9e4
- * busstop src : https://i.postimg.cc/7h6M1ct0/icons8-bus-24.png
  */
 
 function initMap() {
@@ -56,6 +55,8 @@ function initMap() {
         });
     }
 });
+
+
 
 }
 
@@ -166,42 +167,6 @@ const properties = [{
   position: {
     lat: 13.845078,
     lng: 100.567091,
-  },
-}, {
-  address: '868 Will Ct, Cupertino, CA',
-  description: 'Single family house in great school zone',
-  price: '$ 2,500,000',
-  type: 'home',
-  bed: 3,
-  bath: 2,
-  size: 100,
-  position: {
-    lat: 37.34576403052,
-    lng: -122.04455090047453,
-  },
-}, {
-  address: '655 Haylee St, Santa Clara, CA',
-  description: '2 storey store with large storage room',
-  price: '$ 2,500,000',
-  type: 'store-alt',
-  bed: 3,
-  bath: 2,
-  size: 450,
-  position: {
-    lat: 37.362863347890716,
-    lng: -121.97802139023555,
-  },
-}, {
-  address: '2019 Natasha Dr, San Jose, CA',
-  description: 'Single family house',
-  price: '$ 2,325,000',
-  type: 'home',
-  bed: 4,
-  bath: 3.5,
-  size: 500,
-  position: {
-    lat: 37.41391636421949,
-    lng: -121.94592071575907,
   },
 }];
 
