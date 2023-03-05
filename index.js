@@ -8,12 +8,21 @@
  * map id : 517913eb51add9e4
  */
 
+// Set up MQTT client
+//var serverUrl = 'ws://your-mqtt-server.com:9001/mqtt';
+var clientId = 'client_' + Math.random().toString(16).substr(2, 8);
+var serverUrl = 'wss://1625438fb6e94be98331197bdcf3dba7.s2.eu.hivemq.cloud:8884/mqtt';
+var client = new Paho.MQTT.Client(serverUrl, clientId);
+var map;
+var circle = null;
+
+
 function initMap() {
     var center = {
         lat: 13.848285,
         lng: 100.569100
     };
-    var map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById("map"), {
         zoom: 16,
         center: center,
         mapId: "517913eb51add9e4"
@@ -60,53 +69,6 @@ function initMap() {
         }
     });
 
-    function update_location() {
-        const client = mqtt.connect('mqtt://iot.cpe.ku.ac.th', {
-            username: 'b6510503841',
-            password: 'sompon.o@ku.th'
-        });
-      
-        const circle = new google.maps.Circle({
-            strokeColor: "#FF0000",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: "#FF0000",
-            fillOpacity: 0.35,
-            map: map,
-            center: { lat: 13.848285, lng: 100.569100 },
-            radius: 50
-        });
-      
-        client.subscribe('b6510503841/test');
-      
-        client.on('message', function (topic, message) {
-            const location = JSON.parse(message);
-            const lat = location.lat;
-            const lng = location.lng;
-            console.log("Set It !!!")
-            circle.setCenter(new google.maps.LatLng(lat, lng));
-        });
-    }
-      
-    const mqtt = require('mqtt');
-    const client = mqtt.connect('mqtt://iot.cpe.ku.ac.th', {
-        username: 'b6510503841',
-        password: 'sompon.o@ku.th'
-    });
-      
-    client.on('connect', () => {
-        console.log('Connected to MQTT broker');
-        client.subscribe('b6510503841/test');
-    });
-      
-    client.on('message', (topic, message) => {
-        console.log(`Received message on topic ${topic}: ${message.toString()}`);
-        if (topic === 'b6510503841/test') {
-            setInterval(update_location, 8000);
-        }
-    });
-    
-
 
 }
 function highlight(markerView, property) {
@@ -123,8 +85,15 @@ function buildContent(property) {
     content.innerHTML = "\n    <div class=\"icon\">\n        <i aria-hidden=\"true\" class=\"fa-solid fa-bus\" title=\"".concat(property.type, "\"></i>\n        <span class=\"fa-sr-only\">").concat(property.type, "</span>\n    </div>\n    <div class=\"details\">\n        <div class=\"price\">").concat(property.price, "</div>\n        <div class=\"features\">\n       \n        </div>\n    </div>\n    ");
     return content;
 }
+function buildCircle(property) {
+    var content = document.createElement("div");
+    content.classList.add("circle_bus");
+    content.innerHTML = "\n    <div class=\"icon\">\n        <i aria-hidden=\"true\" class=\"fa-solid fa-bus\" title=\"".concat(property.type, "\"></i>\n        <span class=\"fa-sr-only\">").concat(property.type, "</span>\n    </div>\n    <div class=\"details\">\n        <div class=\"price\">").concat(property.price, "</div>\n        <div class=\"features\">\n       \n        </div>\n    </div>\n    ");
+    return content;
+}
 
 
+var circle_bus = [{price:'none',type: 'bus',bed: 5,bath:4,size:300}]
 
 var properties = [{
         price: 'Bus1',
@@ -207,3 +176,51 @@ var properties = [{
         }
     }];
 window.initMap = initMap;
+
+// Callback for connection lost
+client.onConnectionLost = function(responseObject) {
+    console.log('Connection lost: ' + responseObject.errorMessage);
+  };
+
+client.onMessageArrived = function(message) {
+    if (circle !== null) {
+        circle.setMap(null);
+    }
+    console.log('Message arrived: ' + message.payloadString);
+    const location = JSON.parse(message.payloadString);
+    const lat_got = location.lat;
+    const lng_got = location.lng;
+    circle = new google.maps.Circle({
+        content:buildCircle(circle_bus),
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#FF0000",
+        fillOpacity: 0.35,
+        map: map,
+        center: { lat: lat_got, lng: lng_got },
+        radius: 20,
+    });
+    //circle.setCenter(new google.maps.LatLng(lat, lng));
+    console.log("Set It !!!")
+  };
+
+var options = {
+    onSuccess: function() {
+      console.log('Connected to broker');
+      client.subscribe('b6510503841/test');
+    },
+    useSSL: true,
+    userName: 'b6510503841',
+    password: 'tbs36453'
+  };
+  
+
+// Connect to MQTT server
+client.connect(options);
+
+
+
+// Subscribe to location
+var topic = 'b6510503841/test';
+client.subscribe(topic);
