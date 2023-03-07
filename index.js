@@ -98,9 +98,6 @@ var circle_bus = [{price:'none',type: 'bus',bed: 5,bath:4,size:300}]
 var properties = [{
         price: 'Bus1',
         type: 'home',
-        bed: 5,
-        bath: 4.5,
-        size: 300,
         position: {
             lat: 13.847645,
             lng: 100.567023
@@ -108,9 +105,6 @@ var properties = [{
     }, {
         price: 'Bus2',
         type: 'building',
-        bed: 4,
-        bath: 3,
-        size: 200,
         position: {
             lat: 13.846753,
             lng: 100.564628
@@ -119,57 +113,34 @@ var properties = [{
     {
         price: 'Bus3',
         type: 'warehouse',
-        bed: 4,
-        bath: 4,
-        size: 800,
         position: {
             lat: 13.848469,
             lng: 100.565564
         }
     }, {
-        address: '98 Aleh Ave, Palo Alto, CA',
-        description: 'A lovely store on busy road',
         price: 'Bus4',
         type: 'store-alt',
-        bed: 2,
-        bath: 1,
-        size: 210,
         position: {
             lat: 13.847089,
             lng: 100.568160
         }
     }, {
-        address: '2117 Su St, MountainView, CA',
-        description: 'Single family house near golf club',
         price: 'Bus5',
         type: 'home',
-        bed: 4,
-        bath: 3,
-        size: 200,
         position: {
             lat: 13.846568,
             lng: 100.570435
         }
     }, {
-        address: '197 Alicia Dr, Santa Clara, CA',
-        description: 'Multifloor large warehouse',
         price: 'Bus6',
         type: 'warehouse',
-        bed: 5,
-        bath: 4,
-        size: 700,
         position: {
             lat: 13.843550,
             lng: 100.570038
         }
     }, {
-        address: '700 Jose Ave, Sunnyvale, CA',
-        description: '3 storey townhouse with 2 car garage',
         price: 'Bus7',
         type: 'building',
-        bed: 4,
-        bath: 4,
-        size: 600,
         position: {
             lat: 13.845078,
             lng: 100.567091
@@ -192,15 +163,17 @@ client.onMessageArrived = function(message) {
     const lng_got = location.lng;
     circle = new google.maps.Circle({
         content:buildCircle(circle_bus),
-        strokeColor: "#FF0000",
-        strokeOpacity: 0.8,
+        strokeColor: "##2196f3",
+        strokeOpacity: 1,
         strokeWeight: 2,
-        fillColor: "#FF0000",
+        fillColor: "#2196f3",
         fillOpacity: 0.35,
         map: map,
         center: { lat: lat_got, lng: lng_got },
-        radius: 20,
+        radius: 5,
     });
+
+    
     //circle.setCenter(new google.maps.LatLng(lat, lng));
     console.log("Set It !!!")
   };
