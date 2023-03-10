@@ -15,9 +15,11 @@ var serverUrl = 'wss://1625438fb6e94be98331197bdcf3dba7.s2.eu.hivemq.cloud:8884/
 var client = new Paho.MQTT.Client(serverUrl, clientId);
 var map;
 var circle = null;
-
+var line_stage;
+var BusPath;
 
 function initMap() {
+    console.log("Drawing Map...")
     var center = {
         lat: 13.848285,
         lng: 100.569100
@@ -69,6 +71,27 @@ function initMap() {
         }
     });
 
+    function drawBusPath(all_busstop){
+        var BusPlanCoordinates = [];
+        for (let i = 0; i < all_busstop.length; i++) {
+            var busstop = all_busstop[i];
+            BusPlanCoordinates.push({'lat':busstop.position.lat,'lng':busstop.position.lng});
+          }
+          BusPlanCoordinates.push({'lat':all_busstop[0].position.lat,'lng':all_busstop[0].position.lng});
+        BusPath = new google.maps.Polyline({
+            path: BusPlanCoordinates,
+            geodesic: true,
+            strokeColor: "#00B0FF",
+            strokeOpacity: 1.0,
+            strokeWeight: 2,
+          });
+        BusPath.setMap(map);
+        line_stage = 'on'
+        document.getElementById("onoff-line").addEventListener("click",onoffLine)
+    }
+
+    drawBusPath(properties);
+    console.log("Drawing Map Finished")
 
 }
 function highlight(markerView, property) {
@@ -92,60 +115,72 @@ function buildCircle(property) {
     return content;
 }
 
+function onoffLine(){
+    if (line_stage === 'on') {
+        BusPath.setMap(null)
+        line_stage = 'off'
+        }
+    else{
+        BusPath.setMap(map)
+        line_stage = 'on'
+    }
+      
+}
+
 
 var circle_bus = [{price:'none',type: 'bus',bed: 5,bath:4,size:300}]
 
 var properties = [{
-        price: 'Bus1',
-        type: 'home',
-        position: {
-            lat: 13.847645,
-            lng: 100.567023
-        }
-    }, {
-        price: 'Bus2',
-        type: 'building',
-        position: {
-            lat: 13.846753,
-            lng: 100.564628
-        }
-    },
-    {
-        price: 'Bus3',
-        type: 'warehouse',
-        position: {
-            lat: 13.848469,
-            lng: 100.565564
-        }
-    }, {
-        price: 'Bus4',
-        type: 'store-alt',
-        position: {
-            lat: 13.847089,
-            lng: 100.568160
-        }
-    }, {
-        price: 'Bus5',
-        type: 'home',
-        position: {
-            lat: 13.846568,
-            lng: 100.570435
-        }
-    }, {
-        price: 'Bus6',
-        type: 'warehouse',
-        position: {
-            lat: 13.843550,
-            lng: 100.570038
-        }
-    }, {
-        price: 'Bus7',
-        type: 'building',
-        position: {
-            lat: 13.845078,
-            lng: 100.567091
-        }
-    }];
+    price: 'Bus1',
+    type: 'building',
+    position: {
+        lat: 13.846753,
+        lng: 100.564628
+    }
+},
+{
+    price: 'Bus2',
+    type: 'warehouse',
+    position: {
+        lat: 13.848469,
+        lng: 100.565564
+    }
+},{
+    price: 'Bus3',
+    type: 'home',
+    position: {
+        lat: 13.847645,
+        lng: 100.567023
+    }
+},  {
+    price: 'Bus4',
+    type: 'store-alt',
+    position: {
+        lat: 13.847089,
+        lng: 100.568160
+    }
+}, {
+    price: 'Bus5',
+    type: 'home',
+    position: {
+        lat: 13.846568,
+        lng: 100.570435
+    }
+}, {
+    price: 'Bus6',
+    type: 'warehouse',
+    position: {
+        lat: 13.843550,
+        lng: 100.570038
+    }
+}, {
+    price: 'Bus7',
+    type: 'building',
+    position: {
+        lat: 13.845078,
+        lng: 100.567091
+    }
+}];
 window.initMap = initMap;
 
 // Callback for connection lost

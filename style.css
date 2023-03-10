@@ -198,3 +198,21 @@ body {
 .property:not(.highlight):has(.fa-shop)::after {
   border-top: 9px solid var(--shop-color);
 }
+
+/*
+* set up panel
+*
+*/
+#floating-panel {
+  position: absolute;
+  top: 10px;
+  left: 25%;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+  font-family: "Roboto", "sans-serif";
+  line-height: 30px;
+  padding-left: 10px;
+}
