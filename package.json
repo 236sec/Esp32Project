@@ -33,6 +33,7 @@
   "private": true,
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.15.1",
-    "async-mqtt": "^2.6.3"
+    "async-mqtt": "^2.6.3",
+    "mqtt": "^4.3.7"
   }
 }

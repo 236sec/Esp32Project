@@ -198,14 +198,14 @@ client.onMessageArrived = function(message) {
     const lng_got = location.lng;
     circle = new google.maps.Circle({
         content:buildCircle(circle_bus),
-        strokeColor: "##2196f3",
+        strokeColor: "#FFFFFF",
         strokeOpacity: 1,
         strokeWeight: 2,
-        fillColor: "#2196f3",
-        fillOpacity: 0.35,
+        fillColor: "#FFBF00",
+        fillOpacity: 1,
         map: map,
         center: { lat: lat_got, lng: lng_got },
-        radius: 5,
+        radius: 10 ,
     });
 
     
